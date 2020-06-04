@@ -21,6 +21,7 @@ namespace Rs.App.Core.Ng.ClientRegistration
         {
             services.AddControllersWithViews();
             services.AddClientDbContext(Configuration.GetConnectionString("ClientDbConn"));
+            services.AddClientAppDi();
 
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

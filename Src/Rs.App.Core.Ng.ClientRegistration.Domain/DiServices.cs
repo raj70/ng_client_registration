@@ -12,6 +12,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Rs.App.Core.ClientRegistration.Data;
+using Rs.App.Core.ClientRegistration.Domain;
+using Rs.App.Core.ClientRegistration.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +30,14 @@ namespace Rs.App.Core.Ng.ClientRegistration
             return services
                 .AddDbContext<ApplicationDbContext>(x => x.UseSqlServer(connectionString)
                 .EnableSensitiveDataLogging(true));
+        }
+
+        public static IServiceCollection AddClientAppDi(this IServiceCollection services)
+        {
+            services.AddScoped<IRepository<Client>, ClientsRepository>();
+            services.AddScoped<IRepository<Address>, AddressesRepository>();
+            services.AddScoped<IRepository<ClientCredential>, CredentialsRepository>();
+            return services;
         }
     }
 }
