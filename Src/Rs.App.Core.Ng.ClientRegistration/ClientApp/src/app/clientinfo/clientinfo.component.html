@@ -1,63 +1,158 @@
 <h2>Client Registration</h2>
 <form [formGroup]="clientRegForm" (ngSubmit)="onSubmit()">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" formControlName="firstName">                
-            </div>
-            <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" formControlName="lastName">                
-            </div>
-            <div class="form-group">
-                <label for="dob">Dob</label>
-                <input type="date" class="form-control" id="dob" formControlName="dob">                
-            </div>
-            <div class="form-group">
-                <label for="emailAddress">Email Address</label>
-                <input type="email" class="form-control" id="emailAddress" formControlName="emailAddress">                
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" formControlName="password">                
-            </div>
-            <div class="form-group">
-                <label for="password">Confirm password</label>
-                <input type="password" class="form-control" id="password" formControlName="password">                
-            </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" id="firstName" formControlName="firstName">
+        <div *ngIf="firstName.invalid && (firstName.dirty || firstName.touched)"
+             class="alert alert-danger">
+          <div *ngIf="firstName.errors.required">
+            First Name is requried
+          </div>
+          <div *ngIf="firstName.errors.maxlength">
+            Name exceed the max length - 60
+          </div>
         </div>
 
-        <div class="col-md-6">
-            <div formGroupName="address">
-                <div class="form-group">
-                    <label for="line1">Address</label>
-                    <input type="text" class="form-control" id="line1" formControlName="line1">                
-                </div>
-                <div class="form-group">
-                    <label for="line2"></label>
-                    <input type="text" class="form-control" id="line2" formControlName="line2">                
-                </div>
-                <div class="form-group">
-                    <label for="line3"></label>
-                    <input type="text" class="form-control" id="line3" formControlName="line3">                
-                </div>
-                <div class="form-group">
-                    <label for="suburb">Suburb</label>
-                    <input type="text" class="form-control" id="suburb" formControlName="suburb">                
-                </div>
-                <div class="form-group">
-                    <label for="postcode">Postcode</label>
-                    <input type="text" class="form-control" id="postcode" formControlName="postcode">                
-                </div>
-                <div class="form-group">
-                    <label for="country">Country</label>
-                    <input type="text" class="form-control" id="country" formControlName="country">                
-                </div>
-            </div>
+      </div>
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" id="lastName" formControlName="lastName">
+        <div *ngIf="lastName.invalid && (lastName.dirty || lastName.touched)"
+             class="alert alert-danger">
+          <div *ngIf="lastName.errors.required">
+            Last Name is requried
+          </div>
+          <div *ngIf="lastName.errors.maxlength">
+            Name exceed the max length - 60
+          </div>
         </div>
+      </div>
+      <div class="form-group">
+        <label for="dob">Dob</label>
+        <input type="date" class="form-control" id="dob" formControlName="dob">
+        <div *ngIf="dob.invalid && (dob.dirty || dob.touched)"
+             class="alert alert-danger">
+          <div *ngIf="dob.errors.required">
+            Dob is requried
+          </div>
+          <div *ngIf="dob.errors.futuredate">
+            Dob cannot be current year or future year
+          </div>
+          <div *ngIf="dob.errors.passeddate">
+            Dob must be after 1923 year
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phonenumber">Phone Number</label>
+        <input type="text" class="form-control" id="phonenumber" formControlName="phonenumber">
+        <div *ngIf="phonenumber.invalid && (phonenumber.dirty || phonenumber.touched)"
+             class="alert alert-danger">
+          <div *ngIf="phonenumber.errors.required">
+            Phone number is requried
+          </div>
+          <div *ngIf="phonenumber.errors.regphonenumber">
+            Phone number must be 8 to 15 digit with or without '-'
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="emailAddress">Email Address</label>
+        <input type="email" class="form-control" id="emailAddress" formControlName="emailAddress">
+        <div *ngIf="emailAddress.invalid && (emailAddress.dirty || emailAddress.touched)"
+             class="alert alert-danger">
+          <div *ngIf="emailAddress.errors.required">
+            Email Address is requried
+          </div>
+          <div *ngIf="emailAddress.errors.email">
+            Not a valid email address
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" id="password" formControlName="password">
+        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+             class="alert alert-danger">
+          <div *ngIf="password.errors.required">
+            Password is requried
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="confirmPassword">Confirm password</label>
+        <input type="password" class="form-control" id="confirmPassword" formControlName="confirmPassword">
+        <div *ngIf="password.value != confirmPassword.value" class="alert alert-danger">
+          Confirm password must be matched with password
+        </div>
+      </div>
     </div>
-   
 
-      <button type="submit" [disabled]="!clientRegForm.valid" class="btn btn-primary">Submit</button>
+    <div class="col-md-6">
+      <div formGroupName="address">
+        <div class="form-group">
+          <label for="line1">Address</label>
+          <input type="text" class="form-control" id="line1" formControlName="line1">
+          <div *ngIf="line1.invalid && (line1.dirty || line1.touched)"
+               class="alert alert-danger">
+            <div *ngIf="line1.errors.required">
+              Address Name is requried
+            </div>
+            <div *ngIf="line1.errors.maxlength">
+              Address exceed the max length - 60, please other lines
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="line2"></label>
+          <input type="text" class="form-control" id="line2" formControlName="line2">
+        </div>
+        <div class="form-group">
+          <label for="line3"></label>
+          <input type="text" class="form-control" id="line3" formControlName="line3">
+        </div>
+        <div class="form-group">
+          <label for="suburb">Suburb</label>
+          <input type="text" class="form-control" id="suburb" formControlName="suburb">
+          <div *ngIf="suburb.invalid && (suburb.dirty || suburb.touched)"
+               class="alert alert-danger">
+            <div *ngIf="suburb.errors.required">
+              Suburb is requried
+            </div>
+            <div *ngIf="suburb.errors.maxlength">
+              Suburb exceed the max length - 30
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="postcode">Postcode</label>
+          <input type="text" class="form-control" id="postcode" formControlName="postcode">
+          <div *ngIf="postcode.invalid && (postcode.dirty || postcode.touched)"
+               class="alert alert-danger">
+            <div *ngIf="postcode.errors.required">
+              Postcode is requried
+            </div>
+            <div *ngIf="postcode.errors.maxlength">
+              Postcode exceed the max length - 8
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" class="form-control" id="country" formControlName="country">
+          <div *ngIf="country.invalid && (country.dirty || country.touched)"
+               class="alert alert-danger">
+            <div *ngIf="country.errors.required">
+              Country is requried
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <button type="submit" [disabled]="!clientRegForm.valid" class="btn btn-primary">Submit</button>
 </form>
