@@ -20,6 +20,8 @@ namespace Rs.App.Core.Ng.ClientRegistration
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddClientDbContext(Configuration.GetConnectionString("ClientDbConn"));
+
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -63,7 +65,9 @@ namespace Rs.App.Core.Ng.ClientRegistration
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
+                    //https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/angular?view=aspnetcore-3.1&tabs=visual-studio#run-ng-serve-independently
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200");
+                    //spa.UseAngularCliServer(npmScript: "start");
                 }
             });
         }
