@@ -28,11 +28,15 @@ namespace Rs.App.Core.ClientRegistration.Domain
         {
             get
             {
+                if (string.IsNullOrWhiteSpace(_compareConcatenated))
+                {
+                    _compareConcatenated = $"{Line1}{Line2}{Line3}{Suburb}{Postcode}{Country}";
+                }
                 return _compareConcatenated;
             }
             set
             {
-                _compareConcatenated = $"{Line1}{Line2}{Line3}{Suburb}{Postcode}{Country}";
+                _compareConcatenated = value;
             }
         }
         public string Suburb { get; set; }

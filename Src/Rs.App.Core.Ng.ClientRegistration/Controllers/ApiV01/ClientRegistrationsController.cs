@@ -22,6 +22,8 @@ namespace Rs.App.Core.Ng.ClientRegistration.Controllers.ApiV01
 
         public async Task<IActionResult> Post([FromBody] ClientViewModel clientRegitrationViewModel)
         {
+            var client = await _clientRegistrationService.AddAsync(clientRegitrationViewModel.Client());
+            
             return Ok();
         }
     }

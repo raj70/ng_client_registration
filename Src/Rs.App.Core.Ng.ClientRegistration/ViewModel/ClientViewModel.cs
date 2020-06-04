@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rs.App.Core.ClientRegistration.Domain;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
         [Required]
         [RegularExpression("^(?!-)[0-9\\-?]{8,15}$")] //https://regexr.com/
         public string PhoneNumber { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
         [Required]
         [MaxLength(250)]
         public string Line1 { get; set; }
@@ -42,11 +43,47 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
         public string Country { get; set; }
         [Required]
         [MaxLength(250)]
-        public string Username { get; set; }
+        [EmailAddress]
+        public string EmailAddress { get; set; }
         [Required]
         [MaxLength(250)]
         public string Password { get; set; }
         [Compare(nameof(Password))]
         public string ConfirmationPassword { get; set; }
+
+        public Address Address()
+        {
+            return new Address {
+                Country = Country,
+                Line1 = Line1,
+                Line2 =Line2,
+                Line3 = Line3,
+                Postcode = Postcode,
+                Suburb = Suburb,
+                CompareConcatenated = "",
+            };
+        }
+
+        public ClientCredential ClientCredential()
+        {
+            return new ClientCredential{
+                Username = EmailAddress,
+                Password = Password
+            };
+        }
+
+        public Client Client()
+        {
+            return new Client
+            {
+                Address = Address(),
+                ClientCredential = ClientCredential(),
+                Dob = Dob,
+                FirstName = FirstName,
+                IsActive = IsActive,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber
+            };
+        }
     }
 }
