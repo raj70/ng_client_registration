@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Rs.App.Core.ClientRegistration.Data;
 using Rs.App.Core.ClientRegistration.Domain;
 using Rs.App.Core.ClientRegistration.Repository;
+using Rs.App.Core.ClientRegistration.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,6 +38,7 @@ namespace Rs.App.Core.Ng.ClientRegistration
             services.AddScoped<IRepository<Client>, ClientsRepository>();
             services.AddScoped<IRepository<Address>, AddressesRepository>();
             services.AddScoped<IRepository<ClientCredential>, CredentialsRepository>();
+            services.AddScoped<IClientRegistrationService, ClientRegistrationService>();
             return services;
         }
     }
