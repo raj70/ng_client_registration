@@ -49,14 +49,14 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
         [MaxLength(250)]
         public string Password { get; set; }
         [Compare(nameof(Password))]
-        public string ConfirmationPassword { get; set; }
+        public string ConfirmaPassword { get; set; }
 
-        public Address Address()
+        protected Address Address()
         {
             return new Address {
                 Country = Country,
                 Line1 = Line1,
-                Line2 =Line2,
+                Line2 = Line2,
                 Line3 = Line3,
                 Postcode = Postcode,
                 Suburb = Suburb,
@@ -64,9 +64,9 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
             };
         }
 
-        public ClientCredential ClientCredential()
+        protected ClientCredential ClientCredential()
         {
-            return new ClientCredential{
+            return new ClientCredential {
                 Username = EmailAddress,
                 Password = Password
             };
@@ -83,6 +83,27 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
                 IsActive = IsActive,
                 LastName = LastName,
                 PhoneNumber = PhoneNumber
+            };
+        }
+    }
+
+    public static class ClientExtension
+    {
+        public static ClientViewModel CreateVm(this Client client)
+        {
+            return new ClientViewModel {                
+                Country = client.Address.Country,
+                Dob = client.Dob,
+                EmailAddress = client.ClientCredential.Username,
+                FirstName = client.FirstName,
+                IsActive = client.IsActive,
+                LastName = client.LastName,
+                Line1 = client.Address.Line1,
+                Line2 = client.Address.Line2,
+                Line3 = client.Address.Line3,
+                PhoneNumber = client.PhoneNumber,
+                Postcode = client.Address.Postcode,
+                Suburb = client.Address.Suburb
             };
         }
     }

@@ -22,9 +22,13 @@ namespace Rs.App.Core.Ng.ClientRegistration.Controllers.ApiV01
 
         public async Task<IActionResult> Post([FromBody] ClientViewModel clientRegitrationViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Error in user data");
+            }
             var client = await _clientRegistrationService.AddAsync(clientRegitrationViewModel.Client());
             
-            return Ok();
+            return Ok(client.CreateVm());
         }
     }
 }
