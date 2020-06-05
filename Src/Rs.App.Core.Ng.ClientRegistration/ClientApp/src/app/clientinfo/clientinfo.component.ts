@@ -15,7 +15,11 @@ import { HttpClient } from '@angular/common/http';
 
 export class ClientinfoComponent implements OnInit {
 
-  constructor( private http: HttpClient) { }
+  errorMessage = '';
+
+  constructor( private http: HttpClient) { 
+    this.errorMessage = '';
+  }
 
   clientRegForm = new FormGroup({
     firstName: new FormControl('',[
@@ -64,12 +68,21 @@ export class ClientinfoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.warn(this.clientRegForm.value);
+    //console.warn(this.clientRegForm.value);
     this.http.post("/api/V01/ClientRegistrations", this.clientRegForm.value)
-      .subscribe(value => console.log(value),
-       error => console.log(error),
-       () => alert("Registration completed") );
-    
+      .subscribe(
+        value => console.log(value),
+        error => 
+        {
+          console.log(error.error)
+          this.errorMessage = error.error;
+        },
+        () => alert("Registration completed") 
+      );    
+  };
+
+  resetError(){
+    this.errorMessage = '';
   }
 
   /** https://angular.io/guide/form-validation#built-in-validator-functions */
