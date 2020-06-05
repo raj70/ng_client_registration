@@ -4,21 +4,27 @@ import { validFutureDate } from './valid-future-date';
 import { validPassedDate } from './valid-date-after';
 import { validPhone } from './valid-phone';
 import { HttpClient } from '@angular/common/http';
+import { validPassword } from './valid-password';
+
+enum enumMessageType{
+  error, warning, info
+}
 
 @Component({
   selector: 'app-clientinfo',
   templateUrl: './clientinfo.component.html',
   styleUrls: ['./clientinfo.component.css']
 })
-
 /** https://angular.io/guide/reactive-forms */
 
 export class ClientinfoComponent implements OnInit {
 
   errorMessage = '';
+  messageCss = '';
 
   constructor( private http: HttpClient) { 
     this.errorMessage = '';
+    this.messageCss = 'alert-warning';
   }
 
   clientRegForm = new FormGroup({
@@ -43,7 +49,13 @@ export class ClientinfoComponent implements OnInit {
       Validators.required,
       Validators.email
     ]),
-    password: new FormControl('',[Validators.required]),
+    password: new FormControl('',
+      [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(30),     
+        validPassword(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"))   
+      ]),
     confirmPassword: new FormControl(''),
     address: new FormGroup({
       line1: new FormControl('',[
@@ -69,20 +81,37 @@ export class ClientinfoComponent implements OnInit {
 
   onSubmit() {
     //console.warn(this.clientRegForm.value);
+    this.resetMessageWithMessageType("Loading...", enumMessageType.info) 
     this.http.post("/api/V01/ClientRegistrations", this.clientRegForm.value)
       .subscribe(
-        value => console.log(value),
+        value => {
+
+        },
         error => 
         {
           console.log(error.error)
-          this.errorMessage = error.error;
+          this.resetMessageWithMessageType(error.error, enumMessageType.error);
         },
-        () => alert("Registration completed") 
+        () => this.resetMessageWithMessageType("Registration Completed", enumMessageType.info) 
       );    
   };
 
-  resetError(){
-    this.errorMessage = '';
+  resetError(message: string){
+    this.errorMessage = message;
+  }
+
+  resetMessageWithMessageType(message: string, typeOfMessage: enumMessageType){
+    if(typeOfMessage == enumMessageType.error){
+      this.messageCss = 'alert-danger';
+    }
+    else if(typeOfMessage == enumMessageType.info){
+      this.messageCss = 'alert-info';
+    }
+    else{
+      this.messageCss = 'alert-warning';
+    }
+
+    this.errorMessage = message;
   }
 
   /** https://angular.io/guide/form-validation#built-in-validator-functions */

@@ -1,8 +1,8 @@
 <h2>Client Registration</h2>
 <div *ngIf="errorMessage != ''">
-  <div class="alert alert-warning" role="alert">
+  <div class="alert {{ messageCss }}" role="alert">
     {{ errorMessage }}
-    <button type="button" class="close" data-dismiss="alert" (click)="resetError()">
+    <button type="button" class="close" data-dismiss="alert" (click)="resetError('')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -87,6 +87,20 @@
              class="alert alert-danger">
           <div *ngIf="password.errors.required">
             Password is requried
+          </div>
+          <div *ngIf="password.errors.maxlength">
+            Password exceed the max length - 30
+          </div>
+          <div *ngIf="password.errors.minlength">
+            Password must be exceed - 8
+          </div>
+          <div *ngIf="password.errors.validpassword">
+            <ul>
+              <li>Must have as one number</li>
+              <li>Must have one upper case</li>
+              <li>Must be between 8 and 30 characters</li>
+              <li>One special character (!@#$%^&*())</li>
+            </ul>
           </div>
         </div>
       </div>
