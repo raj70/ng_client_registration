@@ -25,6 +25,7 @@ import { ClientinfoComponent } from './clientinfo/clientinfo.component';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'counter', component: CounterComponent },

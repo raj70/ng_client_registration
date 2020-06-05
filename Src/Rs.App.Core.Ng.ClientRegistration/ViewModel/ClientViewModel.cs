@@ -25,6 +25,59 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
         [RegularExpression("^(?!-)[0-9\\-?]{8,15}$")] //https://regexr.com/
         public string PhoneNumber { get; set; }
         public bool IsActive { get; set; } = true;
+
+        [Required]
+        [MaxLength(250)]
+        [EmailAddress]
+        public string EmailAddress { get; set; }
+        [Required]
+        [MaxLength(250)]
+        public string Password { get; set; }
+        [Compare(nameof(Password))]
+        public string confirmPassword { get; set; }
+
+        public AddressViewModel Address { get; set; }
+
+        protected Address AddressDom()
+        {
+            return new Address
+            {
+                Country = Address.Country,
+                Line1 = Address.Line1,
+                Line2 = Address.Line2,
+                Line3 = Address.Line3,
+                Postcode = Address.Postcode,
+                Suburb = Address.Suburb,
+                CompareConcatenated = "",
+            };
+        }
+
+        protected ClientCredential ClientCredential()
+        {
+            return new ClientCredential
+            {
+                Username = EmailAddress,
+                Password = Password
+            };
+        }
+
+        public Client Client()
+        {
+            return new Client
+            {
+                Address = AddressDom(),
+                ClientCredential = ClientCredential(),
+                Dob = Dob,
+                FirstName = FirstName,
+                IsActive = IsActive,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber
+            };
+        }
+    }
+
+    public class AddressViewModel
+    {
         [Required]
         [MaxLength(250)]
         public string Line1 { get; set; }
@@ -41,69 +94,31 @@ namespace Rs.App.Core.Ng.ClientRegistration.ViewModel
         [Required]
         [MaxLength(250)]
         public string Country { get; set; }
-        [Required]
-        [MaxLength(250)]
-        [EmailAddress]
-        public string EmailAddress { get; set; }
-        [Required]
-        [MaxLength(250)]
-        public string Password { get; set; }
-        [Compare(nameof(Password))]
-        public string ConfirmaPassword { get; set; }
-
-        protected Address Address()
-        {
-            return new Address {
-                Country = Country,
-                Line1 = Line1,
-                Line2 = Line2,
-                Line3 = Line3,
-                Postcode = Postcode,
-                Suburb = Suburb,
-                CompareConcatenated = "",
-            };
-        }
-
-        protected ClientCredential ClientCredential()
-        {
-            return new ClientCredential {
-                Username = EmailAddress,
-                Password = Password
-            };
-        }
-
-        public Client Client()
-        {
-            return new Client
-            {
-                Address = Address(),
-                ClientCredential = ClientCredential(),
-                Dob = Dob,
-                FirstName = FirstName,
-                IsActive = IsActive,
-                LastName = LastName,
-                PhoneNumber = PhoneNumber
-            };
-        }
     }
 
     public static class ClientExtension
     {
         public static ClientViewModel CreateVm(this Client client)
         {
-            return new ClientViewModel {                
-                Country = client.Address.Country,
+            return new ClientViewModel
+            {
+                Address = new AddressViewModel
+                {
+                    Country = client.Address.Country,
+                    Line1 = client.Address.Line1,
+                    Line2 = client.Address.Line2,
+                    Line3 = client.Address.Line3,
+                    Postcode = client.Address.Postcode,
+                    Suburb = client.Address.Suburb
+                },
                 Dob = client.Dob,
                 EmailAddress = client.ClientCredential.Username,
                 FirstName = client.FirstName,
                 IsActive = client.IsActive,
                 LastName = client.LastName,
-                Line1 = client.Address.Line1,
-                Line2 = client.Address.Line2,
-                Line3 = client.Address.Line3,
+
                 PhoneNumber = client.PhoneNumber,
-                Postcode = client.Address.Postcode,
-                Suburb = client.Address.Suburb
+
             };
         }
     }

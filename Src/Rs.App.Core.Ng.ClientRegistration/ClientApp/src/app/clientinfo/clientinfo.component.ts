@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { validFutureDate } from './valid-future-date';
 import { validPassedDate } from './valid-date-after';
 import { validPhone } from './valid-phone';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-clientinfo',
@@ -14,7 +15,7 @@ import { validPhone } from './valid-phone';
 
 export class ClientinfoComponent implements OnInit {
 
-  constructor() { }
+  constructor( private http: HttpClient) { }
 
   clientRegForm = new FormGroup({
     firstName: new FormControl('',[
@@ -63,7 +64,12 @@ export class ClientinfoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.warn(this.clientRegForm);
+    console.warn(this.clientRegForm.value);
+    this.http.post("/api/V01/ClientRegistrations", this.clientRegForm.value)
+      .subscribe(value => console.log(value),
+       error => console.log(error),
+       () => alert("Registration completed") );
+    
   }
 
   /** https://angular.io/guide/form-validation#built-in-validator-functions */
@@ -74,10 +80,10 @@ export class ClientinfoComponent implements OnInit {
   get emailAddress() { return this.clientRegForm.get('emailAddress'); }
   get password() { return this.clientRegForm.get('password'); }
   get confirmPassword() { return this.clientRegForm.get('confirmPassword'); }
-  get line1() { return this.clientRegForm.get('line1'); }
-  get line2() { return this.clientRegForm.get('line2'); }
-  get line3() { return this.clientRegForm.get('line3'); }
-  get suburb() { return this.clientRegForm.get('suburb'); }
-  get postcode() { return this.clientRegForm.get('postcode'); }
-  get country() { return this.clientRegForm.get('country'); }
+  get line1() { return this.clientRegForm.get('address.line1'); }
+  get line2() { return this.clientRegForm.get('address.line2'); }
+  get line3() { return this.clientRegForm.get('address.line3'); }
+  get suburb() { return this.clientRegForm.get('address.suburb'); }
+  get postcode() { return this.clientRegForm.get('address.postcode'); }
+  get country() { return this.clientRegForm.get('address.country'); }
 }
