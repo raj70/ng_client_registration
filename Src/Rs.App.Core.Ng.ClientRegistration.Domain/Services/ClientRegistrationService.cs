@@ -12,6 +12,7 @@
 */
 using Microsoft.EntityFrameworkCore;
 using Rs.App.Core.ClientRegistration.Domain;
+using Rs.App.Core.ClientRegistration.Exceptions;
 using Rs.App.Core.ClientRegistration.Repository;
 using System.Threading.Tasks;
 
@@ -37,37 +38,38 @@ namespace Rs.App.Core.ClientRegistration.Services
             var existedQuery = await _credentialRepository.FindAsync(x => x.Username == client.ClientCredential.Username);
             var existedClient = await existedQuery.FirstOrDefaultAsync();
 
-            // dummy hold;
-            var addedClient = client;
-            if (existedClient == null)
-            { 
-                // check if the address exists
-                var existedAddressQuery = await _addressRepository.FindAsync(x => x.CompareConcatenated == client.Address.CompareConcatenated);
-                var existedAddress = await existedAddressQuery.FirstOrDefaultAsync();
-
-                var clientModel = new Client
-                {
-                    Dob = client.Dob,
-                    FirstName = client.FirstName,
-                    IsActive = client.IsActive,
-                    LastName = client.LastName,
-                    PhoneNumber = client.PhoneNumber,
-                    ClientCredential = client.ClientCredential
-                };
-                if (existedAddress == null)
-                {
-                    // if not add address
-                    clientModel.Address = client.Address; // added
-                    addedClient = await _clientRepository.AddAsync(clientModel);
-                }
-                else
-                {
-                    addedClient = await _clientRepository.AddAsync(clientModel);
-                    addedClient.Address = existedAddress; // just assign
-                }
-                await _clientRepository.SaveChangesAsync();
-
+            if (existedClient != null)
+            {
+                throw new ClientExistException($"{client.ClientCredential.Username} already exist");
             }
+
+            var addedClient = client;
+            // check if the address exists
+            var existedAddressQuery = await _addressRepository.FindAsync(x => x.CompareConcatenated == client.Address.CompareConcatenated);
+            var existedAddress = await existedAddressQuery.FirstOrDefaultAsync();
+
+            var clientModel = new Client
+            {
+                Dob = client.Dob,
+                FirstName = client.FirstName,
+                IsActive = client.IsActive,
+                LastName = client.LastName,
+                PhoneNumber = client.PhoneNumber,
+                ClientCredential = client.ClientCredential
+            };
+            if (existedAddress == null)
+            {
+                // if not add address
+                clientModel.Address = client.Address; // added
+                addedClient = await _clientRepository.AddAsync(clientModel);
+            }
+            else
+            {
+                addedClient = await _clientRepository.AddAsync(clientModel);
+                addedClient.Address = existedAddress; // just assign
+            }
+            await _clientRepository.SaveChangesAsync();
+
             return addedClient; // for now
         }
     }
