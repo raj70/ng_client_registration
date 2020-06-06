@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { validFutureDate } from './valid-future-date';
 import { validPassedDate } from './valid-date-after';
 import { validPhone } from './valid-phone';
-import { HttpClient } from '@angular/common/http';
 import { validPassword } from './valid-password';
+import { ClientService } from '../services/client-api/client.service';
 
 enum enumMessageType{
   error, warning, info
@@ -17,12 +17,12 @@ enum enumMessageType{
 })
 /** https://angular.io/guide/reactive-forms */
 
-export class ClientinfoComponent implements OnInit {
+export class ClientinfoComponent implements ISubscriberCallback {
 
   errorMessage = '';
   messageCss = '';
 
-  constructor( private http: HttpClient) { 
+  constructor( private clientService: ClientService) { 
     this.errorMessage = '';
     this.messageCss = 'alert-warning';
   }
@@ -82,18 +82,7 @@ export class ClientinfoComponent implements OnInit {
   onSubmit() {
     //console.warn(this.clientRegForm.value);
     this.resetMessageWithMessageType("Loading...", enumMessageType.info) 
-    this.http.post("/api/V01/ClientRegistrations", this.clientRegForm.value)
-      .subscribe(
-        value => {
-
-        },
-        error => 
-        {
-          console.log(error.error)
-          this.resetMessageWithMessageType(error.error, enumMessageType.error);
-        },
-        () => this.resetMessageWithMessageType("Registration Completed", enumMessageType.info) 
-      );    
+    const subscription = this.clientService.postClient(this.clientRegForm.value, this);     
   };
 
   resetError(message: string){
@@ -112,6 +101,18 @@ export class ClientinfoComponent implements OnInit {
     }
 
     this.errorMessage = message;
+  }
+
+  
+  completed(): void {
+    this.resetMessageWithMessageType("Registration Completed", enumMessageType.info) 
+  }
+  next(value: any): void {
+    console.log(value);
+  }
+  error(error: any): void {
+    console.log(error.error);
+    this.resetMessageWithMessageType(error.error, enumMessageType.error);
   }
 
   /** https://angular.io/guide/form-validation#built-in-validator-functions */
