@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Rs.App.Core.ClientRegistration.Domain;
 using Rs.App.Core.ClientRegistration.Exceptions;
 using Rs.App.Core.ClientRegistration.Repository;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Rs.App.Core.ClientRegistration.Services
@@ -71,6 +72,6 @@ namespace Rs.App.Core.ClientRegistration.Services
             await _clientRepository.SaveChangesAsync();
 
             return addedClient; // for now
-        }
+        }       
     }
 }

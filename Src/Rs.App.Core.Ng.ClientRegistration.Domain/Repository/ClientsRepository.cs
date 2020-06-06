@@ -34,6 +34,11 @@ namespace Rs.App.Core.ClientRegistration.Repository
                 return (_dbContext as ApplicationDbContext);
             }
         }
+
+        public async override Task<IQueryable<Client>> GetAllAsync()
+        {
+            return await Task.Run(() => DBContext.Clients.Include(x => x.ClientCredential));            
+        }
     }
 }
 
