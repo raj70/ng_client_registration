@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { validFutureDate } from './valid-future-date';
-import { validPassedDate } from './valid-date-after';
-import { validPhone } from './valid-phone';
-import { validPassword } from './valid-password';
 import { ClientService } from '../services/client-api/client.service';
+import { ValidationService } from './validation.service';
 
 enum enumMessageType{
   error, warning, info
@@ -13,7 +10,8 @@ enum enumMessageType{
 @Component({
   selector: 'app-clientinfo',
   templateUrl: './clientinfo.component.html',
-  styleUrls: ['./clientinfo.component.css']
+  styleUrls: ['./clientinfo.component.css'],
+  providers: [ValidationService]
 })
 /** https://angular.io/guide/reactive-forms */
 
@@ -22,7 +20,8 @@ export class ClientinfoComponent implements ISubscriberCallback {
   errorMessage = '';
   messageCss = '';
 
-  constructor( private clientService: ClientService) { 
+  constructor( private clientService: ClientService,
+    private inputValidation: ValidationService) { 
     this.errorMessage = '';
     this.messageCss = 'alert-warning';
   }
@@ -38,12 +37,12 @@ export class ClientinfoComponent implements ISubscriberCallback {
     ]),
     dob: new FormControl('',[
       Validators.required,
-      validFutureDate(),
-      validPassedDate(1923)
+      this.inputValidation.validFutureDate(),
+      this.inputValidation.validPassedDate(1923)
     ]),
     phonenumber: new FormControl('',[
       Validators.required,
-      validPhone(new RegExp("^(?!-)[0-9\\-?]{8,15}$"))
+      this.inputValidation.validPhone(new RegExp("^(?!-)[0-9\\-?]{8,15}$"))
     ]),    
     emailAddress: new FormControl('',[
       Validators.required,
@@ -54,7 +53,7 @@ export class ClientinfoComponent implements ISubscriberCallback {
         Validators.required,
         Validators.minLength(8),
         Validators.maxLength(30),     
-        validPassword(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"))   
+        this.inputValidation.validPassword(new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})"))   
       ]),
     confirmPassword: new FormControl(''),
     address: new FormGroup({
