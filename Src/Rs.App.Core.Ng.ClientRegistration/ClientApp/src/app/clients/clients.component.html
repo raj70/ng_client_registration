@@ -1,0 +1,23 @@
+<h2>Clients</h2>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">First Name</th>
+          <th scope="col">Last Name</th>
+          <th scope="col">Dob</th>
+          <th scope="col">Email Address</th>
+          <th scope="col">Phone Number</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let client of clients">
+          <td>{{ client.firstName  }} </td>
+          <td>{{ client.lastName | uppercase }}</td>
+          <td>{{ client.dob | date:'mediumDate' }}</td>
+          <td>{{ client.emailAddress }}</td>
+          <td>{{ client.phoneNumber  }}</td>
+        </tr>
+        </tbody>
+      </table>
+</div>
