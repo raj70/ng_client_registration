@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+
 import { ClientService } from '../services/client-api/client.service';
 import { ValidationService } from './validation.service';
 import { ISubscriberCallback } from '../ViewModels/ISubscriberCallback';
@@ -16,7 +17,7 @@ enum enumMessageType{
 })
 /** https://angular.io/guide/reactive-forms */
 
-export class ClientinfoComponent implements ISubscriberCallback {
+export class ClientinfoComponent implements OnInit {
 
   errorMessage = '';
   messageCss = '';
@@ -80,9 +81,8 @@ export class ClientinfoComponent implements ISubscriberCallback {
   }
 
   onSubmit() {
-    //console.warn(this.clientRegForm.value);
     this.resetMessageWithMessageType("Loading...", enumMessageType.info) 
-    const subscription = this.clientService.postClient(this.clientRegForm.value, this);     
+    const clientReg = this.clientService.postClient(this.clientRegForm.value,this);
   };
 
   resetError(message: string){

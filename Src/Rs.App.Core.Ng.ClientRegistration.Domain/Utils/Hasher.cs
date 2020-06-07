@@ -7,28 +7,29 @@
 * [4.0.30319.42000]
 * Author: rajen.shrestha 
 * Machine: RAJDEVMAC
-* Time: 6/4/2020 4:31:01 PM
+* Time: 6/6/2020 10:05:18 PM
 */
-using Rs.App.Core.ClientRegistration.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rs.App.Core.ClientRegistration.Domain
+namespace Rs.App.Core.ClientRegistration.Utils
 {
-    public class ClientCredential : AbstractDomain
+    public static class Hasher
     {
-        public string Username { get; set; }
-        public string Password { get; set; }
-
-        public Guid ClientId { get; set; }
-        public Client Client { get; set; }
-
-        public void HashPassword()
+       public static string HashIt(this string data)
         {
-            this.Password = this.Password.HashIt();
+            var bytes = new UTF8Encoding().GetBytes(data);
+            byte[] hashBytes;
+            using(var algorithm = new SHA512Managed())
+            {
+                hashBytes = algorithm.ComputeHash(bytes);
+            }
+
+            return Convert.ToBase64String(hashBytes);
         }
     }
 }

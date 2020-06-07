@@ -17,7 +17,6 @@ export class ValidationService {
         }
         
       const isValid = reg.test(value);
-      console.log(value, isValid, reg.source);
       return !isValid ? {'validpassword': {value: control.value}} : null;
     };
   };

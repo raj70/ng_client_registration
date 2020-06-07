@@ -16,3 +16,19 @@ export interface Address{
     suburb:string,
     country:string
 }
+
+export interface ClientCredential{
+    userName: string,
+    password: string
+}
+
+export interface ClientInfoReg{
+    id: string,
+    firstName: string,
+    lastName:string,
+    dob: Date,
+    phoneNumber: number,
+    emilAddress: string,    
+    address: Address,
+    clientCredential: ClientCredential
+}

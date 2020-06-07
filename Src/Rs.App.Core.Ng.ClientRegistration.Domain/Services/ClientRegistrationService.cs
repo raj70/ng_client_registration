@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Rs.App.Core.ClientRegistration.Domain;
 using Rs.App.Core.ClientRegistration.Exceptions;
 using Rs.App.Core.ClientRegistration.Repository;
+using Rs.App.Core.ClientRegistration.Utils;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -49,6 +50,7 @@ namespace Rs.App.Core.ClientRegistration.Services
             var existedAddressQuery = await _addressRepository.FindAsync(x => x.CompareConcatenated == client.Address.CompareConcatenated);
             var existedAddress = await existedAddressQuery.FirstOrDefaultAsync();
 
+            client.ClientCredential.HashPassword();
             var clientModel = new Client
             {
                 Dob = client.Dob,
