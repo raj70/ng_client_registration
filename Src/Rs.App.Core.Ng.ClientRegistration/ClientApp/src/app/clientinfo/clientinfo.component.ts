@@ -4,10 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../services/client-api/client.service';
 import { ValidationService } from './validation.service';
 import { ISubscriberCallback } from '../ViewModels/ISubscriberCallback';
-
-enum enumMessageType{
-  error, warning, info
-}
+import { enumMessageType } from '../ViewModels/Enums';
 
 @Component({
   selector: 'app-clientinfo',

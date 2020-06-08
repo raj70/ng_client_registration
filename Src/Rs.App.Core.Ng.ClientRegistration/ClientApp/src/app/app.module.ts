@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ClientinfoComponent } from './clientinfo/clientinfo.component';
 import { ClientsComponent } from './clients/clients.component';
+import { AlertMessageComponent } from './alert-message/alert-message.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ClientsComponent } from './clients/clients.component';
     CounterComponent,
     FetchDataComponent,
     ClientinfoComponent,
-    ClientsComponent
+    ClientsComponent,
+    AlertMessageComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
