@@ -14,3 +14,33 @@ code {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
+app-modal {
+  display: none;
+}
+app-modal .app-modal {
+position: fixed;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+z-index: 1000;
+overflow: auto;
+}
+app-modal .app-modal .app-modal-body {
+padding: 20px;
+background: #fff;
+margin: 40px;
+}
+app-modal .app-modal-background {
+position: fixed;
+top: 0;
+right: 0;
+bottom: 0;
+left: 0;
+background-color: rgb(17, 13, 13);
+opacity: 0.75;
+z-index: 900;
+}
+body.app-modal-open {
+overflow: hidden;
+}

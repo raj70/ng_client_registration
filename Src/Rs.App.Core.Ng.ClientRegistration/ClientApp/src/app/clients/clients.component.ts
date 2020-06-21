@@ -3,6 +3,7 @@ import { ClientService } from '../services/client-api/client.service';
 
 import {ClientInfo} from '../ViewModels/IClientInfo';
 import { ISubscriberCallback } from '../ViewModels/ISubscriberCallback';
+import { ModalService } from '../_modal/modal.service';
 
 @Component({
   selector: 'app-clients',
@@ -12,7 +13,9 @@ import { ISubscriberCallback } from '../ViewModels/ISubscriberCallback';
 export class ClientsComponent implements OnInit {
 
   clients: ClientInfo[];
-  constructor(private clientService: ClientService) {
+  selectClient: ClientInfo;
+  constructor(private clientService: ClientService,
+    private modalService: ModalService) {
 
    }
 
@@ -25,9 +28,17 @@ export class ClientsComponent implements OnInit {
       );      
   }
 
+  openClientInfo(id: string, client: ClientInfo): void{
+    this.selectClient = client;
+    this.modalService.open(id);
+  }
+
+  closeModal(id:string){
+    this.modalService.close(id);
+  }
   
   completed(): void {
-    console.log("Finished");
+    
   }
   next(value: any): void {
     this.clients = value;    

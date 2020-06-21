@@ -1,6 +1,6 @@
 <h2>Clients</h2>
 <div>
-    <table class="table table-striped">
+    <table class="table table-striped mytable">
         <thead>
         <tr>
           <th scope="col">First Name</th>
@@ -11,7 +11,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let client of clients">
+        <tr *ngFor="let client of clients" (click)="openClientInfo('detail', client)">
           <td>{{ client.firstName  }} </td>
           <td>{{ client.lastName | uppercase }}</td>
           <td>{{ client.dob | date:'mediumDate' }}</td>
@@ -21,3 +21,26 @@
         </tbody>
       </table>
 </div>
+<app-modal id="detail">
+  <div *ngIf="selectClient">
+    <div>
+      <h4>Client Info</h4>
+    </div>
+    <table class="table">
+      <tr>
+        <td>Name</td>
+        <td>{{ selectClient.firstName  }} {{ selectClient.lastName }}</td>
+      </tr>
+      <tr>
+        <td>Phone Number</td>
+        <td>{{ selectClient.phoneNumber }}</td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td>{{ selectClient.emailAddress }}</td>
+      </tr>
+    </table>
+  </div>
+  <button (click)="closeModal('detail');" class="btn btn-primary">Close</button> |   
+  <button (click)="closeModal('detail');" class="btn btn-danger">Delete</button>  
+</app-modal>

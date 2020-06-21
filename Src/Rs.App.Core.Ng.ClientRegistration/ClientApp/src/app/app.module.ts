@@ -12,6 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { ClientinfoComponent } from './clientinfo/clientinfo.component';
 import { ClientsComponent } from './clients/clients.component';
 import { AlertMessageComponent } from './alert-message/alert-message.component';
+import { ModalModule } from './_modal/modal/modal.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { AlertMessageComponent } from './alert-message/alert-message.component';
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
+    ModalModule,
     ReactiveFormsModule,
     HttpClientModule,
     RouterModule.forRoot([
